@@ -46,5 +46,9 @@ class RegisterController extends Controller {
             return response()->json(['error' => 'No estás autorizado'], 401);
         }
     }
+    public function getUsers() {
+        $users = User::all();
+        return response()->json(['users' => $users], $this->successStatus);
+    }
 
 }

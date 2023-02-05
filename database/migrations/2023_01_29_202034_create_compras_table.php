@@ -20,6 +20,7 @@ class CreateComprasTable extends Migration
             $table->unsignedBigInteger('articulo_id');
             $table->foreign('articulo_id')->references('id')->on('articulos');
             $table->date('fecha_compra');
+            $table->integer('cantidad');
             $table->timestamps();
         });
     }

@@ -20,6 +20,8 @@ class CreateArticulosTable extends Migration
             $table->text('foto',255)->nullable();
             $table->text('material')->nullable();
             $table->text('color')->nullable();
+            $table->integer('stock');
+            $table->integer('precio');
             $table->boolean('deleted')->default(0);
             $table->timestamps();
         });

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('auth:api')->get('/users', 'API\RegisterController@getUsers');
 
 Route::post('register', 'API\RegisterController@register');
 
@@ -24,3 +25,4 @@ Route::post('login', 'API\RegisterController@login');
 Route::middleware('auth:api')->group( function () {
 	Route::resource('articulos', 'API\ArticuloController');
 });
+
