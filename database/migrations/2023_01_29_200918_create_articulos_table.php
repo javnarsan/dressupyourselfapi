@@ -17,6 +17,8 @@ class CreateArticulosTable extends Migration
             $table->bigIncrements('id');
             $table->text('modelo');
             $table->text('tipo');
+            $table->text('genero')->nullable();
+            $table->text('edad')->nullable();
             $table->text('foto',255)->nullable();
             $table->text('material')->nullable();
             $table->text('color')->nullable();

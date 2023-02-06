@@ -16,12 +16,19 @@ class ArticuloController extends Controller {
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
 
+    public function getByGenero($genero){
+    $articulos = Articulo::where('genero', $genero)->get();
+    return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+    }
+
     public function store(Request $request) {
         $input = $request->all();
 
         $validator = Validator::make($input, [
             'modelo' => 'required',
             'tipo' => 'required',
+            'stock' => 'required',
+            'precio' => 'required',
         ]);
 
         if($validator->fails()){
@@ -30,7 +37,7 @@ class ArticuloController extends Controller {
 
         $articulo = Articulo::create($input);
 
-        return response()->json(['Articulo' => $product->toArray()], $this->successStatus);
+        return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
     }
 
     public function show($id) {

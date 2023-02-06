@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('tipo')->default('C'); //C -> Cliente, A -> Admin
+            $table->string('tipo')->default('U'); //U -> User, A -> Admin
             $table->boolean('actived')->default(0);
             $table->boolean('deleted')->default(0);
             $table->rememberToken();
