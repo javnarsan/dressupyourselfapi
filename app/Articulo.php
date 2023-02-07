@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Articulo extends Model
 {
     protected $fillable = [
-        'modelo', 'tipo', 'genero', 'edad', 'material', 'color', 'stock', 'precio', 
+        'modelo', 'tipo', 'marca', 'genero', 'edad', 'material', 'color', 'stock', 'precio', 
     ];
 }

@@ -16,6 +16,7 @@ class CreateArticulosTable extends Migration
         Schema::create('articulos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('modelo');
+            $table->text('marca');
             $table->text('tipo');
             $table->text('genero')->nullable();
             $table->text('edad')->nullable();
@@ -24,6 +25,7 @@ class CreateArticulosTable extends Migration
             $table->text('color')->nullable();
             $table->integer('stock');
             $table->integer('precio');
+            $table->integer('vistas')->default(0);
             $table->boolean('deleted')->default(0);
             $table->timestamps();
         });

@@ -28,10 +28,7 @@ class RegisterController extends Controller {
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['name'] =  $user->name;
-        $success['surname'] =  $user->surname;
-        $success['direccion'] =  $user->direccion;
-        $success['email'] =  $user->email;
+        $success['message'] =  'Usuario registrado correctamente';
 
         return response()->json(['success' => $success], $this->successStatus);
     }
@@ -41,6 +38,8 @@ class RegisterController extends Controller {
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
             // Creamos un token de acceso para ese usuario
+            $success['id'] = $user->id;
+            $success['tipo'] = $user->tipo;
             $success['token'] = $user->createToken('MyApp')->accessToken;
 
             // Y lo devolvemos en el objeto 'json'

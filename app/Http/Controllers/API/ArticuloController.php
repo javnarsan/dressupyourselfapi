@@ -17,15 +17,20 @@ class ArticuloController extends Controller {
     }
 
     public function getByGenero($genero){
-    $articulos = Articulo::where('genero', $genero)->get();
-    return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+        $articulos = Articulo::where('genero', $genero)->get();
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
-
+    public function getByMarca($marca){
+        $articulos = Articulo::where('marca', $marca)->get();
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+    }
+    
     public function store(Request $request) {
         $input = $request->all();
 
         $validator = Validator::make($input, [
             'modelo' => 'required',
+            'marca' => 'required',
             'tipo' => 'required',
             'stock' => 'required',
             'precio' => 'required',
@@ -56,21 +61,27 @@ class ArticuloController extends Controller {
 
         $validator = Validator::make($input, [
             'modelo' => 'required',
-            'tipo' => 'required'
+            'marca' => 'required',
+            'tipo' => 'required',
+            'stock' => 'required',
+            'precio' => 'required',
         ]);
 
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);       
         }
 
-        $articulo->name = $input['modelo'];
-        $articulo->detail = $input['tipo'];
+        $articulo->modelo = $input['modelo'];
+        $articulo->marca = $input['marca'];
+        $articulo->tipo = $input['tipo'];
+        $articulo->stock = $input['stock'];
+        $articulo->precio = $input['precio'];
         $articulo->save();
 
         return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
     }
 
-    public function destroy(Product $articulo) {
+    public function destroy(Articulo $articulo) {
         $articulo->delete();
 
         return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);

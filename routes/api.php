@@ -24,7 +24,7 @@ Route::middleware('auth:api')->group( function () {
     });
 	Route::resource('articulos', 'API\ArticuloController');
     Route::get('/articulos/genero/{genero}', 'API\ArticuloController@getByGenero');
+    Route::get('/articulos/marca/{marca}', 'API\ArticuloController@getByMarca');
     Route::get('/users', 'API\RegisterController@getUsers');
+
 });
-
-
