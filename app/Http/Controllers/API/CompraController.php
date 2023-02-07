@@ -10,6 +10,27 @@ use Validator;
 class CompraController extends Controller { 
     public $successStatus = 200;
 
+
+
+    //Para obtener una lista de los articulos que tiene el usuario en el carrito
+    public function getCarrito($id) {
+        $compras = Compra::where('cliente_id', $id)
+                        ->whereNull('fecha_compra')
+                        ->with('articulo')
+                        ->get();
+    
+        $articulos = $compras->map(function ($compra) {
+            return $compra->articulo;
+        });
+    
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+    }
+
+
+
+
+
+
     public function index() {
         $compras = Compra::all();
 
@@ -37,29 +58,17 @@ class CompraController extends Controller {
         $compra = Compra::find($id);
 
         if (is_null($compra)) {
-            return response()->json(['error' => $validator->errors()], 401);
+            return response()->json(['error' => 'Este usuario no ha realizado ninguna compra aun'], 401);
         }
 
         return response()->json(['Compra' => $compra->toArray()], $this->successStatus);
     }
 
-
-    public function update(Request $request, Compra $compra) {
+    //Para confirmar la compra de un articulo
+    public function confirmarCompra(Request $request, $id) {
         $input = $request->all();
-
-        $validator = Validator::make($input, [
-            'cliente_id' => 'required',
-            'articulo_id' => 'required',
-            'cantidad' => 'required',
-        ]);
-
-        if($validator->fails()){
-            return response()->json(['error' => $validator->errors()], 401);       
-        }
-
-        $compra->cliente_id = $input['cliente_id'];
-        $compra->articulo_id = $input['articulo_id'];
-        $compra->cantidad = $input['cantidad'];
+        $compra = Compra::find($id);
+        $compra->fecha_compra = now();
         $compra->save();
 
         return response()->json(['Compra' => $compra->toArray()], $this->successStatus);

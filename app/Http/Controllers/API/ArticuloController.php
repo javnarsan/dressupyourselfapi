@@ -16,14 +16,36 @@ class ArticuloController extends Controller {
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
 
+    //Lista filtrada por genero
     public function getByGenero($genero){
         $articulos = Articulo::where('genero', $genero)->get();
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
+    //Lista filtrada por marca
     public function getByMarca($marca){
         $articulos = Articulo::where('marca', $marca)->get();
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
+    
+    //Incremento campo vistas
+    public function updateVistas(Request $request, $id) {
+        $articulo = Articulo::find($id);
+    
+        if (is_null($articulo)) {
+            return response()->json(['error' => "Artículo no encontrado"], 404);
+        }
+    
+        $articulo->vistas += 1;
+        $articulo->save();
+    
+        return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
+    }
+
+
+
+
+
+
     
     public function store(Request $request) {
         $input = $request->all();
