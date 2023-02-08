@@ -66,11 +66,11 @@ class CompraController extends Controller {
 
     //Para confirmar la compra de un articulo
     public function confirmarCompra(Request $request, $id) {
-        $input = $request->all();
-        $compra = Compra::find($id);
-        $compra->fecha_compra = now();
-        $compra->save();
-
+        $compras = Compra::where('cliente_id', $userId)->whereNull('fecha_compra')->get();
+        foreach ($compras as $compra) {
+            $compra->fecha_compra = now();
+            $compra->save();
+        }
         return response()->json(['Compra' => $compra->toArray()], $this->successStatus);
     }
 
