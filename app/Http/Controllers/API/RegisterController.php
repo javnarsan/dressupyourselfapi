@@ -34,19 +34,24 @@ class RegisterController extends Controller {
     }
 
     public function login() {
-        // Si las credenciales son correctas
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
-            $user = Auth::user();
-            // Creamos un token de acceso para ese usuario
+        $credentials = [
+            'email' => request('email'),
+            'password' => request('password')
+        ];
+    
+        $user = User::where('email', $credentials['email'])->first();
+    
+        if (!$user) {
+            return response()->json(['error' => 'El correo electrónico no existe'], 401);
+        }
+    
+        if (Auth::attempt($credentials)) {
             $success['id'] = $user->id;
             $success['tipo'] = $user->tipo;
             $success['token'] = $user->createToken('MyApp')->accessToken;
-
-            // Y lo devolvemos en el objeto 'json'
             return response()->json(['success' => $success], $this->successStatus);
-        }
-        else {
-            return response()->json(['error' => 'No estás autorizado'], 401);
+        } else {
+            return response()->json(['error' => 'La contraseña es incorrecta'], 401);
         }
     }
 
