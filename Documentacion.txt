@@ -1,0 +1,43 @@
+Documentación API
+-------------------------------------------------------------------------------------------------------
+Usuario
+
+•	POST /api/registro
+Parámetros de entrada: name, surname, direccion, email, password, c_password
+Parámetros de salida: Mensaje de error/éxito
+
+•	POST /api/login
+Parámetros de entrada: email, password
+Parámetros de salida: Mensaje de error/éxito e id, tipo de usuario y el token de login
+
+•	GET /api/user 
+Parámetros de entrada: Ninguno
+Parámetros de salida: Usuario que esta logeado actualmente
+
+•	GET /api/users
+Parámetros de entrada: Ninguno
+Parámetros de salida: Una lista con todos los usuarios registrados
+
+-------------------------------------------------------------------------------------------------------
+Artículos
+
+•	GET /api/artículos
+Parámetros de entrada: Ninguno
+Parámetros de salida: Una lista con todos los artículos
+
+•	POST /api/artículos
+Parámetros de entrada: Ninguno
+Parámetros de salida: Una lista con todos los artículos
+
+•	GET /api/articulos/{id}
+Parámetros de entrada: Pasarle por la ruta el id de un artículo
+Parámetros de salida: El artículo que tenga esa id
+
+•	GET /api/articulos/genero/{genero}
+Parámetros de entrada: Pasarle por la ruta un parámetro de tipo String
+Parámetros de salida: Una lista de los articulos filtrados por género, donde va a buscar todos los artículos que tengan en Genero lo mismo que le has pasado
+
+•	GET /api/articulos/marca/{marca}
+Parámetros de entrada: Pasarle por la ruta un parámetro de tipo String
+Parámetros de salida: Una lista de los articulos filtrados por marca, donde va a buscar todos los artículos que tengan en Marca lo mismo que le has pasado
+
