@@ -23,6 +23,10 @@ Route::middleware('auth:api')->group( function () {
         return $request->user();
     });
     Route::get('/users', 'API\RegisterController@getUsers');
+    Route::get('user/{id}', 'API\RegisterController@show');
+    Route::patch('/user/{id}/direccion/{direccion}', 'API\RegisterController@updateDireccion');
+    Route::patch('/user/{id}/nombre/{nombre}', 'API\RegisterController@updateNombre');
+
     //Articulo
     Route::get('articulos', 'API\ArticuloController@index');
     Route::get('articulos/genero/{genero}', 'API\ArticuloController@getByGenero');

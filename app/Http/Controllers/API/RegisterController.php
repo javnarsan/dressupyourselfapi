@@ -13,8 +13,8 @@ class RegisterController extends Controller {
 
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'surname' => 'required',
+            'nombre' => 'required',
+            'apellidos' => 'required',
             'direccion' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
@@ -49,9 +49,40 @@ class RegisterController extends Controller {
             return response()->json(['error' => 'No estás autorizado'], 401);
         }
     }
+
     public function getUsers() {
         $users = User::all();
         return response()->json(['users' => $users], $this->successStatus);
     }
-
+    public function show($id) {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        return response()->json(['user' => $user], 200);
+    }
+    public function destroy($id) {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
+        }
+    
+        $user->delete();
+    
+        return response()->json(['message' => 'Usuario eliminado correctamente'], 200);
+    }
+    public function updateDireccion(Request $request, $id, $direccion) {
+        $user = User::find($id);
+    
+        if(!$user) {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+    
+        $input = $request->all();
+        $user->direccion = $direccion;
+        $user->save();
+    
+        return response()->json(['User' => $user->toArray()], 200);
+    }
 }
