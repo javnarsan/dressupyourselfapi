@@ -10,13 +10,21 @@ Parámetros de salida: Mensaje de error/éxito
 Parámetros de entrada: email, password
 Parámetros de salida: Mensaje de error/éxito e id, tipo de usuario y el token de login
 
+•	GET /api/users
+Parámetros de entrada: Ninguno
+Parámetros de salida: Una lista con todos los usuarios registrados
+
 •	GET /api/user 
 Parámetros de entrada: Ninguno
 Parámetros de salida: Usuario que esta logeado actualmente
 
-•	GET /api/users
-Parámetros de entrada: Ninguno
-Parámetros de salida: Una lista con todos los usuarios registrados
+•	GET /api/user/{id}
+Parámetros de entrada: El id del usuario que quieras obtener
+Parámetros de salida: Ese usuario
+
+•	PUT /api/user/{id}
+Parámetros de entrada: El id del usuario que quieras obtener por la ruta, y los parametros nombre, apellidos y direccion
+Parámetros de salida: Ese usuario con los datos modificados
 
 -------------------------------------------------------------------------------------------------------
 Artículos
@@ -25,11 +33,11 @@ Artículos
 Parámetros de entrada: Ninguno
 Parámetros de salida: Una lista con todos los artículos
 
-•	POST /api/artículos
-Parámetros de entrada: Ninguno
-Parámetros de salida: Una lista con todos los artículos
+•	POST /api/artículo
+Parámetros de entrada: El modelo, la marca, el tipo, el stock y el precio de un articulo
+Parámetros de salida: El articulo que acabas de crear
 
-•	GET /api/articulos/{id}
+•	GET /api/articulo/{id}
 Parámetros de entrada: Pasarle por la ruta el id de un artículo
 Parámetros de salida: El artículo que tenga esa id
 
@@ -41,3 +49,37 @@ Parámetros de salida: Una lista de los articulos filtrados por género, donde v
 Parámetros de entrada: Pasarle por la ruta un parámetro de tipo String
 Parámetros de salida: Una lista de los articulos filtrados por marca, donde va a buscar todos los artículos que tengan en Marca lo mismo que le has pasado
 
+• PATCH /api/articulo/vistas/{id}
+Parámetros de entrada: El id del articulo al que quieras aumentarle en 1 el valor de su atributo vistas
+Parámetros de salida: El articulo al que le has sumado una vista, con las vistas actualizadas
+
+•	PUT /api/articulo/{id}
+Parámetros de entrada: El id del articulo que quieras modificar por la ruta, y los parametros modelo, marca, tipo, stock y precio
+Parámetros de salida: Ese articulo con los datos modificados
+
+-------------------------------------------------------------------------------------------------------
+Compras
+
+•	GET /api/compras
+Parámetros de entrada: Nada
+Parámetros de salida: Una lista con todas las compras de todos los usuarios
+
+•	GET /api/compra/{id}
+Parámetros de entrada: El id de la compra que quieras obtener
+Parámetros de salida: El objeto compra con ese ID
+
+•	POST /api/compra
+Parámetros de entrada: Los parametros de cliente_id, articulo_id y cantidad
+Parámetros de salida: El objeto compra con la fecha de compra null (se mete "en el carrito" del usuario)
+
+•	GET /api/carrito/{id}
+Parámetros de entrada: El id del usuario del que quieras obtener el carrito
+Parámetros de salida: Una lista de los articulos que tiene el usuario en el carrito
+
+•	PATCH /compras/confirmar/{id}
+Parámetros de entrada: El id del usuario del que quieras confirmar la compra de los articulos del carrito
+Parámetros de salida: Una lista de los objeto Compra que acaba de confirmar el usuario
+
+•	GET /api/compras/{id}/articulos
+Parámetros de entrada: El id del usuario del que quieras todos los articulos que ha comprado
+Parámetros de salida: Una lista de objetos articulo cuya compra haya confirmado el usuario
