@@ -36,6 +36,20 @@ class CompraController extends Controller {
 
         return response()->json(['Compras' => $compras->toArray()], $this->successStatus);
     }
+
+    public function articulosCompradosUser($id) {
+        $compras = Compra::where('cliente_id', $id)
+                        ->whereNotNull('fecha_compra')
+                        ->with('articulo')
+                        ->get();
+    
+        $articulos = $compras->map(function ($compra) {
+            return $compra->articulo;
+        });
+    
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+    }
+
     public function store(Request $request) {
         $input = $request->all();
 
@@ -71,12 +85,7 @@ class CompraController extends Controller {
             $compra->fecha_compra = now();
             $compra->save();
         }
-        return response()->json(['Compra' => $compra->toArray()], $this->successStatus);
+        return response()->json(['Compra' => $compras->toArray()], $this->successStatus);
     }
 
-    public function destroy(Product $compra) {
-        $compra->delete();
-
-        return response()->json(['Compra' => $compra->toArray()], $this->successStatus);
-    }
 }

@@ -78,7 +78,8 @@ class ArticuloController extends Controller {
     }
 
 
-    public function update(Request $request, Articulo $articulo) {
+    public function update(Request $request, $id) {
+        $articulo = Articulo::find($id);
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -99,12 +100,6 @@ class ArticuloController extends Controller {
         $articulo->stock = $input['stock'];
         $articulo->precio = $input['precio'];
         $articulo->save();
-
-        return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
-    }
-
-    public function destroy(Articulo $articulo) {
-        $articulo->delete();
 
         return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
     }

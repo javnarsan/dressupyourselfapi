@@ -77,17 +77,28 @@ class RegisterController extends Controller {
     
         return response()->json(['message' => 'Usuario eliminado correctamente'], 200);
     }
-    public function updateDireccion(Request $request, $id, $direccion) {
+    public function update(Request $request, $id) {
         $user = User::find($id);
-    
-        if(!$user) {
-            return response()->json(['error' => 'Usuario no encontrado'], 404);
-        }
-    
         $input = $request->all();
-        $user->direccion = $direccion;
+
+        $validator = Validator::make($input, [
+            'nombre' => 'required',
+            'apellidos' => 'required',
+            'direccion' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 401);       
+        }
+
+        $user->nombre = $input['nombre'];
+        $user->apellidos = $input['apellidos'];
+        $user->tipo = $user->tipo;
+        $user->direccion = $input['direccion'];
+        $user->email = $user->email;
+        $user->password = $user->password;
         $user->save();
-    
-        return response()->json(['User' => $user->toArray()], 200);
+
+        return response()->json(['User' => $user->toArray()], $this->successStatus);
     }
 }
