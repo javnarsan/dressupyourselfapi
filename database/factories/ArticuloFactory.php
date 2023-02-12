@@ -18,16 +18,19 @@ use Faker\Generator as Faker;
 
 $factory->define(Articulo::class, function (Faker $faker) {
     $tipos = ['Camisa', 'Pantalon', 'Camiseta', 'Chaqueta'];
+    $tallas = ['XS', 'S', 'M', 'L', 'XL'];
     $marcas = ['Gucci', 'Louis Vuitton', 'DC','Adidas', 'Nike'];
     $generos = ['hombre', 'mujer'];
     $edades = ['joven','adulto','mayor','infantil'];
     $materiales = ['algodon', 'tela', 'vaquero', 'lino'];
     $colores = ['rojo', 'verde', 'azul','amarillo', 'marron'];
+    
 
     return [
 
         'modelo' => $faker->sentence,
         'tipo' => $faker->randomElement($tipos),
+        'talla' => $faker->randomElement($tallas),
         'marca' => $faker->randomElement($marcas),
         'genero' => $faker->randomElement($generos),
         'edad' => $faker->randomElement($edades),

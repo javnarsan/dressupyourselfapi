@@ -54,6 +54,7 @@ class ArticuloController extends Controller {
             'modelo' => 'required',
             'marca' => 'required',
             'tipo' => 'required',
+            'talla' => 'talla',
             'stock' => 'required',
             'precio' => 'required',
         ]);
@@ -86,6 +87,7 @@ class ArticuloController extends Controller {
             'modelo' => 'required',
             'marca' => 'required',
             'tipo' => 'required',
+            'talla' => 'required',
             'stock' => 'required',
             'precio' => 'required',
         ]);
@@ -97,6 +99,7 @@ class ArticuloController extends Controller {
         $articulo->modelo = $input['modelo'];
         $articulo->marca = $input['marca'];
         $articulo->tipo = $input['tipo'];
+        $articulo->talla = $input['talla'];
         $articulo->stock = $input['stock'];
         $articulo->precio = $input['precio'];
         $articulo->save();

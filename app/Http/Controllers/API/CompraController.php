@@ -80,7 +80,7 @@ class CompraController extends Controller {
 
     //Para confirmar la compra de un articulo
     public function confirmarCompra(Request $request, $id) {
-        $compras = Compra::where('cliente_id', $userId)->whereNull('fecha_compra')->get();
+        $compras = Compra::where('cliente_id', $id)->whereNull('fecha_compra')->get();
         foreach ($compras as $compra) {
             $compra->fecha_compra = now();
             $compra->save();

@@ -18,6 +18,7 @@ class CreateArticulosTable extends Migration
             $table->text('modelo');
             $table->text('marca');
             $table->text('tipo');
+            $table->text('talla');
             $table->text('genero')->nullable();
             $table->text('edad')->nullable();
             $table->text('foto',255)->nullable();
