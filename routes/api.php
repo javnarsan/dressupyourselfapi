@@ -29,7 +29,7 @@ Route::middleware('auth:api')->group( function () {
     //Articulo
     Route::get('/articulos', 'API\ArticuloController@index');
     Route::post('/articulo', 'API\ArticuloController@store');
-    Route::get('/articulos/{id}', 'API\ArticuloController@show');
+    Route::get('/articulo/{id}', 'API\ArticuloController@show');
     Route::get('/articulos/genero/{genero}', 'API\ArticuloController@getByGenero');
     Route::get('/articulos/marca/{marca}', 'API\ArticuloController@getByMarca');
     Route::patch('/articulo/vistas/{id}', 'API\ArticuloController@updateVistas');
