@@ -26,7 +26,11 @@ class ArticuloController extends Controller {
         $articulos = Articulo::where('marca', $marca)->get();
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
-    
+    //Lista filtrada por edad
+    public function getByEdad($edad){
+        $articulos = Articulo::where('edad', $edad)->get();
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+    }
     //Incremento campo vistas
     public function updateVistas(Request $request, $id) {
         $articulo = Articulo::find($id);
