@@ -33,6 +33,14 @@ Artículos
 Parámetros de entrada: Ninguno
 Parámetros de salida: Una lista con todos los artículos
 
+•	GET /api/catalogo
+Parámetros de entrada: Ninguno
+Parámetros de salida: Una lista con todos los artículos, sin repetirse el atributo "modelo"
+
+•	GET /api/articulo/{idArticulo}/tallas
+Parámetros de entrada: El id del articulo del catalogo del que quieras saber tallas disponibles y stock
+Parámetros de salida: Un map con clave "Talla" y valor "stock" (stock de ese articulo en esa talla)
+
 •	POST /api/artículo
 Parámetros de entrada: El modelo, la marca, el tipo, el stock y el precio de un articulo
 Parámetros de salida: El articulo que acabas de crear
@@ -82,7 +90,7 @@ Parámetros de salida: Una lista de los articulos que tiene el usuario en el car
 
 •	PATCH /compras/confirmar/{id}
 Parámetros de entrada: El id del usuario del que quieras confirmar la compra de los articulos del carrito
-Parámetros de salida: Una lista de los objeto Compra que acaba de confirmar el usuario
+Parámetros de salida: Una lista de los objeto Compra que acaba de confirmar el usuario y una lista con los articulos que no ha podido comprar porque la cantidad a comprar es mayor que el stock de la tienda
 
 •	GET /api/compras/{id}/articulos
 Parámetros de entrada: El id del usuario del que quieras todos los articulos que ha comprado

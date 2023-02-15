@@ -45,12 +45,37 @@ class ArticuloController extends Controller {
         return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
     }
 
+    //Mostrar catalogo
+    public function showCatalogo(){
+        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio')
+                    ->distinct('modelo')
+                    ->get();
+
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+
+    }
+
+    //Info de tallas y stock de los articulos con ese mismo modelo
+    public function showTallas($id)
+    {
+        $articulo = Articulo::find($id);
+
+        if (is_null($articulo)) {
+            return response()->json(['error' => 'Artículo no encontrado'], 404);
+        }
+
+        $model = $articulo->modelo;
+
+        $articulosMismoModelo = Articulo::where('modelo', $model)->get();
+
+        $tallasStock = $articulosMismoModelo->mapWithKeys(function ($articulo) {
+            return [$articulo->talla => $articulo->stock];
+        });
+
+        return response()->json($tallasStock, $this->successStatus);
+    }
 
 
-
-
-
-    
     public function store(Request $request) {
         $input = $request->all();
 

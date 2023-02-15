@@ -28,6 +28,8 @@ Route::middleware('auth:api')->group( function () {
     
     //Articulo
     Route::get('/articulos', 'API\ArticuloController@index');
+    Route::get('/catalogo', 'API\ArticuloController@showCatalogo');
+    Route::get('/articulo/{id}/tallas', 'API\ArticuloController@showTallas');
     Route::post('/articulo', 'API\ArticuloController@store');
     Route::get('/articulo/{id}', 'API\ArticuloController@show');
     Route::get('/articulos/genero/{genero}', 'API\ArticuloController@getByGenero');

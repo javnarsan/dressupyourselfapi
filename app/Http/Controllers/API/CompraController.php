@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Compra;
+use App\Articulo;
 use Validator;
 
 class CompraController extends Controller { 
@@ -81,11 +82,27 @@ class CompraController extends Controller {
     //Para confirmar la compra de un articulo
     public function confirmarCompra(Request $request, $id) {
         $compras = Compra::where('cliente_id', $id)->whereNull('fecha_compra')->get();
-        foreach ($compras as $compra) {
-            $compra->fecha_compra = now();
-            $compra->save();
+        $comprasEliminadas = [];
+        foreach ($compras as $key => $compra) {
+            if($compra->cantidad <= Articulo::find($compra->articulo_id)->stock){
+                $compra->fecha_compra = now();
+                $compra->save();
+    
+                // Actualizar el stock del artículo
+                $articulo = Articulo::find($compra->articulo_id);
+                $articulo->stock -= $compra->cantidad;
+                $articulo->save();
+            } else {
+                $comprasEliminadas[] = $compra;
+                unset($compras[$key]);
+                $compra->delete();
+            }
         }
-        return response()->json(['Compra' => $compras->toArray()], $this->successStatus);
+        return response()->json([
+            'Compras realizadas' => $compras->toArray(),
+            'Compras eliminadas por problemas de stock' => $comprasEliminadas
+        ], $this->successStatus);
     }
+    
 
 }
