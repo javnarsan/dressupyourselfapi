@@ -32,17 +32,15 @@ class ArticuloController extends Controller {
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
     //Incremento campo vistas
-    public function updateVistas(Request $request, $id) {
-        $articulo = Articulo::find($id);
-    
-        if (is_null($articulo)) {
-            return response()->json(['error' => "Artículo no encontrado"], 404);
+    public function updateVistas(Request $request, $modelo) {
+        $articulos = Articulo::where('modelo', $modelo)->get();
+        
+        foreach ($articulos as $articulo) {
+            $articulo->vistas += 1;
+            $articulo->save();
         }
-    
-        $articulo->vistas += 1;
-        $articulo->save();
-    
-        return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
+        
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
 
     //Mostrar catalogo
@@ -54,6 +52,17 @@ class ArticuloController extends Controller {
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
 
     }
+    //Mostrar catalogo
+    public function showCatalogoDestacados(){
+        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio')
+                    ->distinct('modelo')
+                    ->orderByDesc('vistas')
+                    ->get();
+
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+
+    }
+
 
     //Info de tallas y stock de los articulos con ese mismo modelo
     public function showTallas($id)
