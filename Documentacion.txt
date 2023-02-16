@@ -81,7 +81,7 @@ Parámetros de entrada: El id de la compra que quieras obtener
 Parámetros de salida: El objeto compra con ese ID
 
 •	POST /api/compra
-Parámetros de entrada: Los parametros de cliente_id, articulo_id y cantidad
+Parámetros de entrada: Los parametros de cliente_id, modelo y talla del articulo y cantidad
 Parámetros de salida: El objeto compra con la fecha de compra null (se mete "en el carrito" del usuario)
 
 •	GET /api/carrito/{id}

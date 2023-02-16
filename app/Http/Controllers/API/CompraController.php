@@ -56,7 +56,8 @@ class CompraController extends Controller {
 
         $validator = Validator::make($input, [
             'cliente_id' => 'required',
-            'articulo_id' => 'required',
+            'modelo' => 'required',
+            'talla' => 'required',
             'cantidad' => 'required',
         ]);
 
@@ -64,7 +65,17 @@ class CompraController extends Controller {
             return response()->json(['error' => $validator->errors()], 401);       
         }
 
-        $compra = Compra::create($input);
+        $articulo = Articulo::where('modelo', $input['modelo'])->where('talla', $input['talla'])->first();
+
+        if (!$articulo) {
+            return response()->json(['error' => 'El artículo no existe o no se encuentra disponible en esa talla'], 404);
+        }
+
+        $compra = Compra::create([
+        'cliente_id' => $input['cliente_id'],
+        'articulo_id' => $articulo->id,
+        'cantidad' => $input['cantidad'],
+        ]);
 
         return response()->json(['Compra' => $compra->toArray()], $this->successStatus);
     }
