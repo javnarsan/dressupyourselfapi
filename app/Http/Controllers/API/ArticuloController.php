@@ -45,7 +45,7 @@ class ArticuloController extends Controller {
 
     //Mostrar catalogo
     public function showCatalogo(){
-        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio')
+        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto')
                     ->distinct('modelo')
                     ->get();
 
@@ -54,7 +54,7 @@ class ArticuloController extends Controller {
     }
     //Mostrar catalogo
     public function showCatalogoDestacados(){
-        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio')
+        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto')
                     ->distinct('modelo')
                     ->orderByDesc('vistas')
                     ->get();
@@ -85,7 +85,7 @@ class ArticuloController extends Controller {
     }
 
 
-    public function store(Request $request) {
+    public function store(Request $request){
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -97,14 +97,25 @@ class ArticuloController extends Controller {
             'precio' => 'required',
         ]);
 
-        if($validator->fails()){
-            return response()->json(['error' => $validator->errors()], 401);       
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
         }
 
         $articulo = Articulo::create($input);
 
+        if ($request->hasFile('foto')) {
+            $imagen = $request->file('foto');
+            $nombre_archivo = $request->input('modelo') . '.' . $imagen->getClientOriginalExtension();
+            $imagen->move(public_path('imagenes'), $nombre_archivo);
+
+            Articulo::where('modelo', $request->input('modelo'))->update(['foto' => $nombre_archivo]);
+        }
+
         return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
     }
+
+
+
 
     public function show($id) {
         $articulo = Articulo::find($id);
