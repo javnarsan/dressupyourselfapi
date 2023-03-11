@@ -92,7 +92,7 @@ class ArticuloController extends Controller {
             'modelo' => 'required',
             'marca' => 'required',
             'tipo' => 'required',
-            'talla' => 'talla',
+            'talla' => 'required',
             'stock' => 'required',
             'precio' => 'required',
         ]);
