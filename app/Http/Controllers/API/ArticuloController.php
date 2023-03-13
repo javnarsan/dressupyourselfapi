@@ -85,7 +85,8 @@ class ArticuloController extends Controller {
     }
 
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -95,24 +96,55 @@ class ArticuloController extends Controller {
             'talla' => 'required',
             'stock' => 'required',
             'precio' => 'required',
+            'genero' => 'required',
+            'edad' => 'required',
+            'material' => 'required',
+            'color' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        $articulo = Articulo::create($input);
+        $articulo = Articulo::where('modelo', $request->input('modelo'))->first();
 
-        if ($request->hasFile('foto')) {
-            $imagen = $request->file('foto');
-            $nombre_archivo = $request->input('modelo') . '.' . $imagen->getClientOriginalExtension();
-            $imagen->move(public_path('imagenes'), $nombre_archivo);
-
-            Articulo::where('modelo', $request->input('modelo'))->update(['foto' => $nombre_archivo]);
+        if ($articulo) {
+            $nombre_archivo = $articulo->foto;
+        } else {
+            $articulo = new Articulo;
+            $articulo->modelo = $request->input('modelo');
+            $articulo->marca = $request->input('marca');
+            $articulo->tipo = $request->input('tipo');
+            $articulo->talla = $request->input('talla');
+            $articulo->stock = $request->input('stock');
+            $articulo->precio = $request->input('precio');
+            $articulo->genero = $request->input('genero');
+            $articulo->edad = $request->input('edad');
+            $articulo->material = $request->input('material');
+            $articulo->color = $request->input('color');
+            $articulo->foto = null;
+            $articulo->save();
+            return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
         }
 
-        return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
+        $articulo_nuevo = new Articulo;
+        $articulo_nuevo->modelo = $request->input('modelo');
+        $articulo_nuevo->marca = $request->input('marca');
+        $articulo_nuevo->tipo = $request->input('tipo');
+        $articulo_nuevo->talla = $request->input('talla');
+        $articulo_nuevo->stock = $request->input('stock');
+        $articulo_nuevo->precio = $request->input('precio');
+        $articulo_nuevo->genero = $request->input('genero');
+        $articulo_nuevo->edad = $request->input('edad');
+        $articulo_nuevo->material = $request->input('material');
+        $articulo_nuevo->color = $request->input('color');
+        $articulo_nuevo->foto = $nombre_archivo;
+        $articulo_nuevo->save();
+
+        return response()->json(['Articulo' => $articulo_nuevo->toArray()], $this->successStatus);
     }
+
+
 
 
 
