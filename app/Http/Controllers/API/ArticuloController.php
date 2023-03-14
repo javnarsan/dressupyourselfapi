@@ -122,7 +122,16 @@ class ArticuloController extends Controller {
             $articulo->edad = $request->input('edad');
             $articulo->material = $request->input('material');
             $articulo->color = $request->input('color');
-            $articulo->foto = null;
+            if ($request->hasFile('foto')) {
+                $imagen = $request->file('foto');
+                $nombre_archivo = $request->input('modelo') . '.' . $imagen->getClientOriginalExtension();
+                $imagen->move(public_path('imagenes'), $nombre_archivo);
+                $articulo->foto = $nombre_archivo;
+                Articulo::where('modelo', $request->input('modelo'))->update(['foto' => $nombre_archivo]);
+            }else{
+                $articulo->foto = null;
+            }
+            
             $articulo->save();
             return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
         }
