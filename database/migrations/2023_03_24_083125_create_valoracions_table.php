@@ -14,15 +14,15 @@ class CreateValoracionsTable extends Migration
     public function up()
     {
         Schema::create('valoracions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('articulo_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('articulo_id');
             $table->text('comentario');
             $table->unsignedTinyInteger('puntuacion');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('articulo_id')->references('id')->on('articulos')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('articulo_id')->references('id')->on('articulos');
         });
     }
 
