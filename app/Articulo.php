@@ -9,4 +9,8 @@ class Articulo extends Model
     protected $fillable = [
         'modelo', 'tipo', 'talla', 'marca', 'genero', 'edad', 'material', 'color', 'stock', 'precio', 'foto', 
     ];
+    public function valoraciones()
+    {
+        return $this->hasMany('App\Valoracion');
+    }
 }

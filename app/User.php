@@ -20,6 +20,11 @@ class User extends Authenticatable
         'nombre', 'apellidos', 'direccion', 'email', 'password',
     ];
 
+    public function valoraciones()
+    {
+        return $this->hasMany('App\Valoracion');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
