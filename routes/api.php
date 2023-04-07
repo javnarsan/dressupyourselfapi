@@ -45,4 +45,8 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/carrito/{id}', 'API\CompraController@getCarrito');
     Route::patch('/compras/confirmar/{id}', 'API\CompraController@confirmarCompra');
     Route::get('/compras/{id}/articulos', 'API\CompraController@articulosCompradosUser');
+    //Valoraciones
+    Route::post('/valoracion', 'ValoracionController@store');
+    Route::delete('/valoracion/{id}', 'ValoracionController@destroy');
+
 });
