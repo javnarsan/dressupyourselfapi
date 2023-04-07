@@ -114,6 +114,32 @@ class CompraController extends Controller {
             'Compras eliminadas por problemas de stock' => $comprasEliminadas
         ], $this->successStatus);
     }
+    //Eliminar del carrito
+    public function eliminarDelCarrito(Request $request) {
+        $cliente_id = auth()->user()->id;
+        $input = $request->all();
+    
+        $validator = Validator::make($input, [
+            'articulo_id' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+    
+        $compra = Compra::where('cliente_id', $cliente_id)
+                        ->where('articulo_id', $input['articulo_id'])
+                        ->whereNull('fecha_compra')
+                        ->first();
+    
+        if (is_null($compra)) {
+            return response()->json(['error' => 'No se encontró la compra en el carrito'], 404);
+        }
+    
+        $compra->delete();
+    
+        return response()->json(['message' => 'Artículo eliminado del carrito correctamente'], $this->successStatus);
+    }
     
 
 }
