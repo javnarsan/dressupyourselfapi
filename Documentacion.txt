@@ -96,8 +96,8 @@ Parámetros de salida: El objeto compra con la fecha de compra null (se mete "en
 Parámetros de entrada: El id del usuario del que quieras obtener el carrito
 Parámetros de salida: Una lista de los articulos que tiene el usuario en el carrito
 
-•	DELETE /api/carrito
-Parámetros de entrada: Una peticion con el id del articulo que quieras eliminar del carrito
+•	DELETE /api/carrito/{articulo_id}
+Parámetros de entrada: El id del articulo que quieras eliminar del carrito como parametro
 Parámetros de salida: Mensaje de error o exito
 
 •	PATCH /compras/confirmar/{id}
