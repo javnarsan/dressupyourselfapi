@@ -13,6 +13,14 @@ class ValoracionController extends Controller
 {
     public function store(Request $request)
     {
+        $compra = Compra::where('cliente_id', auth()->user()->id)
+                    ->where('articulo_id', $request->articulo_id)
+                    ->whereNotNull('fecha_compra')
+                    ->first();
+    
+        if (!$compra) {
+            return redirect()->back()->with('error', 'Debes comprar este artículo antes de valorarlo.');
+        }
         $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'articulo_id' => 'required|integer|exists:articulos,id',

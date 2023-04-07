@@ -31,6 +31,12 @@ class ArticuloController extends Controller {
         $articulos = Articulo::where('edad', $edad)->get();
         return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
     }
+    //Lista filtrada por categoria
+    public function getByCategoria($categoria){
+        $articulos = Articulo::where('categoria', $categoria)->get();
+        return response()->json(['Articulos' => $articulos->toArray()], $this->successStatus);
+    }
+    
     //Incremento campo vistas
     public function updateVistas(Request $request, $modelo) {
         $articulos = Articulo::where('modelo', $modelo)->get();
@@ -45,7 +51,7 @@ class ArticuloController extends Controller {
 
     //Mostrar catalogo
     public function showCatalogo(){
-        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto')
+        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto', 'categoria')
                     ->distinct('modelo')
                     ->get();
 
@@ -54,7 +60,7 @@ class ArticuloController extends Controller {
     }
     //Mostrar catalogo
     public function showCatalogoDestacados(){
-        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto')
+        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto','categoria')
                     ->distinct('modelo')
                     ->orderByDesc('vistas')
                     ->get();
@@ -100,6 +106,7 @@ class ArticuloController extends Controller {
             'edad' => 'required',
             'material' => 'required',
             'color' => 'required',
+            'categoria' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -122,6 +129,7 @@ class ArticuloController extends Controller {
             $articulo->edad = $request->input('edad');
             $articulo->material = $request->input('material');
             $articulo->color = $request->input('color');
+            $articulo->categoria = $request->input('categoria');
             if ($request->hasFile('foto')) {
                 $imagen = $request->file('foto');
                 $nombre_archivo = $request->input('modelo') . '.' . $imagen->getClientOriginalExtension();
@@ -147,6 +155,7 @@ class ArticuloController extends Controller {
         $articulo_nuevo->edad = $request->input('edad');
         $articulo_nuevo->material = $request->input('material');
         $articulo_nuevo->color = $request->input('color');
+        $articulo_nuevo->categoria = $request->input('categoria');
         $articulo_nuevo->foto = $nombre_archivo;
         $articulo_nuevo->save();
 
@@ -180,6 +189,7 @@ class ArticuloController extends Controller {
             'talla' => 'required',
             'stock' => 'required',
             'precio' => 'required',
+            'categoria' => 'required',
         ]);
 
         if($validator->fails()){
@@ -192,6 +202,7 @@ class ArticuloController extends Controller {
         $articulo->talla = $input['talla'];
         $articulo->stock = $input['stock'];
         $articulo->precio = $input['precio'];
+        $articulo->categoria = $input['categoria'];
         $articulo->save();
 
         return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
