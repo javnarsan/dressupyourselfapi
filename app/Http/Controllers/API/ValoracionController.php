@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Valoracion;
+use App\Http\Controllers\Controller;
+use App\Compra;
 use App\User;
 use App\Articulo;
 use Illuminate\Http\Request;
+use Validator;
 
 
 
@@ -19,7 +22,9 @@ class ValoracionController extends Controller
                     ->first();
     
         if (!$compra) {
-            return redirect()->back()->with('error', 'Debes comprar este artículo antes de valorarlo.');
+            return response()->json([
+                'error' => 'Debes comprar este artículo antes de valorarlo.',
+            ], 400);
         }
         $request->validate([
             'user_id' => 'required|integer|exists:users,id',

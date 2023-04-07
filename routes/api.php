@@ -46,10 +46,10 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/carrito/{id}', 'API\CompraController@getCarrito');
     Route::patch('/compras/confirmar/{id}', 'API\CompraController@confirmarCompra');
     Route::get('/compras/{id}/articulos', 'API\CompraController@articulosCompradosUser');
-    Route::delete('/carrito', 'API\CompraController@eliminarDelCarrito');
+    Route::delete('/carrito/{articulo_id}', 'API\CompraController@eliminarDelCarrito');
 
     //Valoraciones
-    Route::post('/valoracion', 'ValoracionController@store');
-    Route::delete('/valoracion/{id}', 'ValoracionController@destroy');
+    Route::post('/valoracion', 'API\ValoracionController@store');
+    Route::delete('/valoracion/{id}', 'API\ValoracionController@destroy');
 
 });
