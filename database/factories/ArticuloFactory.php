@@ -21,6 +21,7 @@ $factory->define(Articulo::class, function (Faker $faker) {
     $tallas = ['XS', 'S', 'M', 'L', 'XL'];
     $marcas = ['Gucci', 'Louis Vuitton', 'DC','Adidas', 'Nike'];
     $generos = ['hombre', 'mujer'];
+    $categorias = ['formal', 'informal','sport'];
     $edades = ['joven','adulto','mayor','infantil'];
     $materiales = ['algodon', 'tela', 'vaquero', 'lino'];
     $colores = ['rojo', 'verde', 'azul','amarillo', 'marron'];
@@ -33,6 +34,7 @@ $factory->define(Articulo::class, function (Faker $faker) {
         'talla' => $faker->randomElement($tallas),
         'marca' => $faker->randomElement($marcas),
         'genero' => $faker->randomElement($generos),
+        'categoria' => $faker->randomElement($categorias),
         'edad' => $faker->randomElement($edades),
         'material' => $faker->randomElement($materiales),
         'color' => $faker->randomElement($colores),
