@@ -67,16 +67,24 @@ class RegisterController extends Controller {
     
         return response()->json(['user' => $user], 200);
     }
-    public function destroy($id) {
+    public function softDelete($id)
+    {
         $user = User::find($id);
+
         if (!$user) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
-    
-        $user->delete();
-    
+
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
+
+        $user->deleted = 1;
+        $user->save();
+
         return response()->json(['message' => 'Usuario eliminado correctamente'], 200);
     }
+
     public function update(Request $request, $id) {
         $user = User::find($id);
         $input = $request->all();
