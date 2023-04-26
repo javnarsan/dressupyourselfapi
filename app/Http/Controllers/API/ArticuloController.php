@@ -93,6 +93,9 @@ class ArticuloController extends Controller {
 
     public function store(Request $request)
     {
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -179,6 +182,9 @@ class ArticuloController extends Controller {
 
 
     public function update(Request $request, $id) {
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $articulo = Articulo::find($id);
         $input = $request->all();
 
@@ -207,4 +213,23 @@ class ArticuloController extends Controller {
 
         return response()->json(['Articulo' => $articulo->toArray()], $this->successStatus);
     }
+
+    public function softDelete($id)
+    {
+        $articulo = Articulo::find($id);
+
+        if (!$articulo) {
+            return response()->json(['message' => 'Artículo no encontrado'], 404);
+        }
+
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
+
+        $articulo->deleted = 1;
+        $articulo->save();
+
+        return response()->json(['message' => 'Artículo eliminado correctamente'], 200);
+    }
+
 }

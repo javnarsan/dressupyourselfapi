@@ -41,6 +41,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/articulos/categoria/{categoria}', 'API\ArticuloController@getByCategoria');
     Route::patch('/articulo/vistas/{id}', 'API\ArticuloController@updateVistas');
     Route::put('/articulo/{id}', 'API\ArticuloController@update');
+    Route::put('/articulo/delete/{id}', 'API\ArticuloController@softDelete');
     //Compra
     Route::get('/compras', 'API\CompraController@index');
     Route::get('/compra/{id}', 'API\CompraController@show');
