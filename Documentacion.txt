@@ -100,7 +100,7 @@ Parámetros de salida: Una lista de los articulos que tiene el usuario en el car
 Parámetros de entrada: El id del articulo que quieras eliminar del carrito como parametro
 Parámetros de salida: Mensaje de error o exito
 
-•	PATCH /compras/confirmar/{id}
+•	PATCH /api/compras/confirmar/{id}
 Parámetros de entrada: El id del usuario del que quieras confirmar la compra de los articulos del carrito
 Parámetros de salida: Una lista de los objeto Compra que acaba de confirmar el usuario y una lista con los articulos que no ha podido comprar porque la cantidad a comprar es mayor que el stock de la tienda
 
