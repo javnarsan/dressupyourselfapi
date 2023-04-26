@@ -22,9 +22,13 @@ Parámetros de salida: Usuario que esta logeado actualmente
 Parámetros de entrada: El id del usuario que quieras obtener
 Parámetros de salida: Ese usuario
 
-•	PUT /api/user/{id}
-Parámetros de entrada: El id del usuario que quieras obtener por la ruta, y los parametros nombre, apellidos y direccion
+•	PUT /api/user/edit/{id}
+Parámetros de entrada: El id del usuario que quieras modificar por la ruta, y los parametros nombre, apellidos y direccion
 Parámetros de salida: Ese usuario con los datos modificados
+
+•	PUT /api/user/delete/{id}
+Parámetros de entrada: El id del usuario que quieras borrar por la ruta, y los parametros nombre, apellidos y direccion
+Parámetros de salida: 200
 
 -------------------------------------------------------------------------------------------------------
 Artículos
