@@ -56,10 +56,16 @@ class RegisterController extends Controller {
     }
 
     public function getUsers() {
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $users = User::all();
         return response()->json(['users' => $users], $this->successStatus);
     }
     public function show($id) {
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $user = User::find($id);
         if (!$user) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
@@ -88,7 +94,9 @@ class RegisterController extends Controller {
     public function update(Request $request, $id) {
         $user = User::find($id);
         $input = $request->all();
-
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $validator = Validator::make($input, [
             'nombre' => 'required',
             'apellidos' => 'required',
