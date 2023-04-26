@@ -15,6 +15,9 @@ class CompraController extends Controller {
 
     //Para obtener una lista de los articulos que tiene el usuario en el carrito
     public function getCarrito($id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $compras = Compra::where('cliente_id', $id)
                         ->whereNull('fecha_compra')
                         ->with('articulo')
@@ -33,12 +36,18 @@ class CompraController extends Controller {
 
 
     public function index() {
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $compras = Compra::all();
 
         return response()->json(['Compras' => $compras->toArray()], $this->successStatus);
     }
 
     public function articulosCompradosUser($id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $compras = Compra::where('cliente_id', $id)
                         ->whereNotNull('fecha_compra')
                         ->with('articulo')
@@ -52,6 +61,9 @@ class CompraController extends Controller {
     }
 
     public function store(Request $request) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $input = $request->all();
 
         $validator = Validator::make($input, [
@@ -81,6 +93,9 @@ class CompraController extends Controller {
     }
 
     public function show($id) {
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $compra = Compra::find($id);
 
         if (is_null($compra)) {
@@ -92,6 +107,9 @@ class CompraController extends Controller {
 
     //Para confirmar la compra de un articulo
     public function confirmarCompra(Request $request, $id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $compras = Compra::where('cliente_id', $id)->whereNull('fecha_compra')->get();
         $comprasEliminadas = [];
         foreach ($compras as $key => $compra) {
@@ -116,6 +134,9 @@ class CompraController extends Controller {
     }
     //Eliminar del carrito
     public function eliminarDelCarrito($articulo_id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $cliente_id = auth()->user()->id;
     
         $compra = Compra::where('cliente_id', $cliente_id)

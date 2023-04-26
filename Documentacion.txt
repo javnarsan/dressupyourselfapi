@@ -126,5 +126,9 @@ Parámetros de entrada: Los parametros de user_id, articulo_id, comentario y pun
 Parámetros de salida: El objeto valoracion y un mensaje de exito
 
 •	DELETE /api/valoracion/{id}
-Parámetros de entrada: El id de la valoracion que quieres eliminar, como parametro
+Parámetros de entrada: El id de la valoracion que quieres eliminar en la ruta
 Parámetros de salida: Mensaje de error o exito
+
+•	PUT /api/valoracion/{id}
+Parámetros de entrada: El id de la valoracion que quieres modificar en la ruta, y los atributos como parametro
+Parámetros de salida: El objeto modificado o un error

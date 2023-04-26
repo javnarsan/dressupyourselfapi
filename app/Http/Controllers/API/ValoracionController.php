@@ -16,6 +16,9 @@ class ValoracionController extends Controller
 {
     public function store(Request $request)
     {
+        if (Auth::user()->id !== $request->get('user_id')) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
         $compra = Compra::where('cliente_id', auth()->user()->id)
                     ->where('articulo_id', $request->articulo_id)
                     ->whereNotNull('fecha_compra')
@@ -58,10 +61,44 @@ class ValoracionController extends Controller
             ], 404);
         }
 
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $valoracion->user_id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
+
         $valoracion->delete();
 
         return response()->json([
             'message' => 'Valoración eliminada con éxito',
+        ], 200);
+    }
+ 
+    public function update(Request $request, $id)
+    {
+        $valoracion = Valoracion::find($id);
+
+        if (!$valoracion) {
+            return response()->json([
+                'message' => 'No se encontró la valoración',
+            ], 404);
+        }
+
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $valoracion->user_id) {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
+
+        $request->validate([
+            'comentario' => 'nullable|string|max:255',
+            'puntuacion' => 'nullable|integer|min:1|max:5',
+        ]);
+
+        $valoracion->comentario = $request->input('comentario', $valoracion->comentario);
+        $valoracion->puntuacion = $request->input('puntuacion', $valoracion->puntuacion);
+
+        $valoracion->save();
+
+        return response()->json([
+            'message' => 'Valoración actualizada con éxito',
+            'valoracion' => $valoracion
         ], 200);
     }
 
