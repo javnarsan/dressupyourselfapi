@@ -121,6 +121,10 @@ Parámetros de salida: Una lista de objetos articulo cuya compra haya confirmado
 -------------------------------------------------------------------------------------------------------
 Valoraciones
 
+•	GET /api/articulos/{id}/valoraciones
+Parámetros de entrada: El id del articulo del que quieras obtener las valoraciones
+Parámetros de salida: Las valoraciones de ese artículo
+
 •	POST /api/valoracion
 Parámetros de entrada: Los parametros de user_id, articulo_id, comentario y puntuacion como Request
 Parámetros de salida: El objeto valoracion y un mensaje de exito
