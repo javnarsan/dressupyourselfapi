@@ -52,6 +52,7 @@ Route::middleware('auth:api')->group( function () {
     Route::delete('/carrito/{articulo_id}', 'API\CompraController@eliminarDelCarrito');
 
     //Valoraciones
+    Route::get('/articulos/{id}/valoraciones', 'API\ValoracionController@getByArticuloId');
     Route::post('/valoracion', 'API\ValoracionController@store');
     Route::delete('/valoracion/{id}', 'API\ValoracionController@destroy');
     Route::put('/valoraciones/{id}', 'API\ValoracionController@update');

@@ -14,6 +14,13 @@ use Validator;
 
 class ValoracionController extends Controller
 {
+    public function getByArticuloId($id)
+    {
+        $valoraciones = Valoracion::where('articulo_id', $id)->get();
+
+        return response()->json($valoraciones);
+    }
+
     public function store(Request $request)
     {
         if (Auth::user()->id !== $request->get('user_id')) {
