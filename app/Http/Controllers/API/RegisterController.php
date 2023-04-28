@@ -75,14 +75,14 @@ class RegisterController extends Controller {
     }
     public function softDelete($id)
     {
+        if (Auth::user()->tipo !== 'A') {
+            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
+
         $user = User::find($id);
 
         if (!$user) {
             return response()->json(['message' => 'Usuario no encontrado'], 404);
-        }
-
-        if (Auth::user()->tipo !== 'A') {
-            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
         }
 
         $user->deleted = 1;
