@@ -25,7 +25,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/users', 'API\RegisterController@getUsers');
     Route::get('/user/{id}', 'API\RegisterController@show');
     Route::put('/user/edit/{id}', 'API\RegisterController@update');
-    Route::put('/users/delete/{id}', 'API\RegisterController@softDelete');
+    Route::put('/user/delete/{id}', 'API\RegisterController@softDelete');
 
     
     //Articulo
