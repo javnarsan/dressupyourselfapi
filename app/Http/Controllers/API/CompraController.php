@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Compra;
 use App\Articulo;
 use Validator;
@@ -15,7 +16,7 @@ class CompraController extends Controller {
 
     //Para obtener una lista de los articulos que tiene el usuario en el carrito
     public function getCarrito($id) {
-        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id != $id) {
             return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
         }
         $compras = Compra::where('cliente_id', $id)
@@ -45,7 +46,7 @@ class CompraController extends Controller {
     }
 
     public function articulosCompradosUser($id) {
-        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id != $id) {
             return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
         }
         $compras = Compra::where('cliente_id', $id)
@@ -61,7 +62,8 @@ class CompraController extends Controller {
     }
 
     public function store(Request $request) {
-        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id != $request->cliente_id) {
+
             return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
         }
         $input = $request->all();
@@ -107,7 +109,7 @@ class CompraController extends Controller {
 
     //Para confirmar la compra de un articulo
     public function confirmarCompra(Request $request, $id) {
-        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id != $id) {
             return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
         }
         $compras = Compra::where('cliente_id', $id)->whereNull('fecha_compra')->get();
@@ -134,9 +136,6 @@ class CompraController extends Controller {
     }
     //Eliminar del carrito
     public function eliminarDelCarrito($articulo_id) {
-        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $user->id) {
-            return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
-        }
         $cliente_id = auth()->user()->id;
     
         $compra = Compra::where('cliente_id', $cliente_id)
