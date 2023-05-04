@@ -39,7 +39,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/articulos/marca/{marca}', 'API\ArticuloController@getByMarca');
     Route::get('/articulos/edad/{edad}', 'API\ArticuloController@getByEdad');
     Route::get('/articulos/categoria/{categoria}', 'API\ArticuloController@getByCategoria');
-    Route::patch('/articulo/vistas/{id}', 'API\ArticuloController@updateVistas');
+    Route::patch('/articulo/vistas/{modelo}', 'API\ArticuloController@updateVistas');
     Route::put('/articulo/{id}', 'API\ArticuloController@update');
     Route::put('/articulo/delete/{id}', 'API\ArticuloController@softDelete');
     //Compra
@@ -52,8 +52,8 @@ Route::middleware('auth:api')->group( function () {
     Route::delete('/carrito/{articulo_id}', 'API\CompraController@eliminarDelCarrito');
 
     //Valoraciones
-    Route::get('/articulos/{id}/valoraciones', 'API\ValoracionController@getByArticuloId');
     Route::post('/valoracion', 'API\ValoracionController@store');
+    Route::get('/articulos/{id}/valoraciones', 'API\ValoracionController@getByArticuloId');
     Route::delete('/valoracion/{id}', 'API\ValoracionController@destroy');
     Route::put('/valoraciones/{id}', 'API\ValoracionController@update');
 

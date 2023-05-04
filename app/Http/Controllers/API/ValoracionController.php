@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Valoracion;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Compra;
 use App\User;
 use App\Articulo;
@@ -23,7 +24,7 @@ class ValoracionController extends Controller
 
     public function store(Request $request)
     {
-        if (Auth::user()->id !== $request->get('user_id')) {
+        if (Auth::user()->id != $request->get('user_id')) {
             return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
         }
         $compra = Compra::where('cliente_id', auth()->user()->id)
@@ -43,20 +44,24 @@ class ValoracionController extends Controller
             'puntuacion' => 'required|integer|min:1|max:5',
         ]);
 
-        $valoracion = new Valoracion([
-            'user_id' => $request->get('user_id'),
-            'articulo_id' => $request->get('articulo_id'),
-            'comentario' => $request->get('comentario'),
-            'puntuacion' => $request->get('puntuacion'),
-        ]);
+        $articulosMismoModelo = Articulo::where('modelo', Articulo::find($request->get('articulo_id'))->modelo)->where('deleted', '!=', 1)->get();
+        
+        foreach ($articulosMismoModelo as $articulo) {
+            $valoracion = new Valoracion([
+                'user_id' => $request->get('user_id'),
+                'articulo_id' => $articulo->id,
+                'comentario' => $request->get('comentario'),
+                'puntuacion' => $request->get('puntuacion'),
+            ]);
 
-        $valoracion->save();
+            $valoracion->save();
+        }
 
         return response()->json([
-            'message' => 'Valoración creada con éxito',
-            'valoracion' => $valoracion
+            'message' => 'Valoraciones creadas con éxito',
         ], 201);
     }
+
 
     public function destroy($id)
     {
@@ -68,8 +73,15 @@ class ValoracionController extends Controller
             ], 404);
         }
 
-        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $valoracion->user_id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id != $valoracion->user_id) {
             return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
+        }
+
+        $articulo = Articulo::find($valoracion->articulo_id);
+        $articulosMismoModelo = Articulo::where('modelo', $articulo->modelo)->get();
+
+        foreach ($articulosMismoModelo as $articuloModelo) {
+            $valoracionesArticulo = Valoracion::where('articulo_id', $articuloModelo->id)->delete();
         }
 
         $valoracion->delete();
@@ -78,6 +90,7 @@ class ValoracionController extends Controller
             'message' => 'Valoración eliminada con éxito',
         ], 200);
     }
+
  
     public function update(Request $request, $id)
     {
@@ -89,23 +102,31 @@ class ValoracionController extends Controller
             ], 404);
         }
 
-        if (Auth::user()->tipo !== 'A' && Auth::user()->id !== $valoracion->user_id) {
+        if (Auth::user()->tipo !== 'A' && Auth::user()->id != $valoracion->user_id) {
             return response()->json(['error' => 'No tienes permiso para realizar esta acción'], 401);
         }
+
+        $articulosMismoModelo = Articulo::where('modelo', $valoracion->articulo->modelo)->get();
 
         $request->validate([
             'comentario' => 'nullable|string|max:255',
             'puntuacion' => 'nullable|integer|min:1|max:5',
         ]);
 
-        $valoracion->comentario = $request->input('comentario', $valoracion->comentario);
-        $valoracion->puntuacion = $request->input('puntuacion', $valoracion->puntuacion);
+        foreach ($articulosMismoModelo as $articulo) {
+            $valoracionModelo = Valoracion::where('articulo_id', $articulo->id)
+                                        ->where('user_id', $valoracion->user_id)
+                                        ->first();
+            if ($valoracionModelo) {
+                $valoracionModelo->comentario = $request->input('comentario', $valoracionModelo->comentario);
+                $valoracionModelo->puntuacion = $request->input('puntuacion', $valoracionModelo->puntuacion);
 
-        $valoracion->save();
+                $valoracionModelo->save();
+            }
+        }
 
         return response()->json([
-            'message' => 'Valoración actualizada con éxito',
-            'valoracion' => $valoracion
+            'message' => 'Valoraciones actualizadas con éxito',
         ], 200);
     }
 

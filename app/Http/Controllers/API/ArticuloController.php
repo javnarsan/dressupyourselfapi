@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Articulo;
 use Validator;
@@ -60,7 +61,7 @@ class ArticuloController extends Controller {
     }
     //Mostrar catalogo
     public function showCatalogoDestacados(){
-        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto','categoria')
+        $articulos = Articulo::select('modelo', 'marca', 'tipo', 'talla', 'edad', 'precio', 'foto','categoria', 'vistas')
                     ->distinct('modelo')
                     ->orderByDesc('vistas')
                     ->get();
@@ -81,7 +82,9 @@ class ArticuloController extends Controller {
 
         $model = $articulo->modelo;
 
-        $articulosMismoModelo = Articulo::where('modelo', $model)->get();
+        $articulosMismoModelo = Articulo::where('modelo', $model)
+        ->where('deleted', '<>', 1)
+        ->get();
 
         $tallasStock = $articulosMismoModelo->mapWithKeys(function ($articulo) {
             return [$articulo->talla => $articulo->stock];

@@ -73,7 +73,7 @@ Parámetros de salida: Una lista de los articulos filtrados por edad, donde va a
 Parámetros de entrada: Pasarle por la ruta un parámetro de tipo String
 Parámetros de salida: Una lista de los articulos filtrados por categoria, donde va a buscar todos los artículos que tengan en Categoria lo mismo que le has pasado
 
-• PATCH /api/articulo/vistas/{id}
+• PATCH /api/articulo/vistas/{modelo}
 Parámetros de entrada: El modelo del articulo al que quieras aumentarle en 1 el valor de su atributo vistas
 Parámetros de salida: Una lista de los artículos con ese modelo, a los que se les ha sumado en 1 la vista
 
