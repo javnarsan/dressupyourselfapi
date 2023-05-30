@@ -19,8 +19,9 @@ class ValoracionController extends Controller
     {
         $valoraciones = Valoracion::where('articulo_id', $id)->get();
 
-        return response()->json($valoraciones);
+        return response()->json(['Valoraciones' => $valoraciones->toArray()], $this->successStatus);
     }
+
 
     public function store(Request $request)
     {
