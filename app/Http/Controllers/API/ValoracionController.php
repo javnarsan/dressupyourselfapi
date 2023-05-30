@@ -15,6 +15,7 @@ use Validator;
 
 class ValoracionController extends Controller
 {
+    public $successStatus = 200;
     public function getByArticuloId($id)
     {
         $valoraciones = Valoracion::where('articulo_id', $id)->get();
