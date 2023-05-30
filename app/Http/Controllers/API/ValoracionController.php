@@ -18,10 +18,24 @@ class ValoracionController extends Controller
     public $successStatus = 200;
     public function getByArticuloId($id)
     {
-        $valoraciones = Valoracion::where('articulo_id', $id)->get();
+        $valoraciones = Valoracion::with('user')->where('articulo_id', $id)->get();
 
-        return response()->json(['Valoraciones' => $valoraciones->toArray()], $this->successStatus);
+        $valoracionesArray = $valoraciones->map(function ($valoracion) {
+            return [
+                'id' => $valoracion->id,
+                'user_id' => $valoracion->user_id,
+                'user_name' => $valoracion->user->nombre,
+                'articulo_id' => $valoracion->articulo_id,
+                'comentario' => $valoracion->comentario,
+                'puntuacion' => $valoracion->puntuacion,
+                'created_at' => $valoracion->created_at,
+                'updated_at' => $valoracion->updated_at,
+            ];
+        });
+
+        return response()->json(['Valoraciones' => $valoracionesArray], $this->successStatus);
     }
+
 
 
     public function store(Request $request)
