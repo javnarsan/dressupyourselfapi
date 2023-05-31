@@ -77,6 +77,19 @@ class ValoracionController extends Controller
             'message' => 'Valoraciones creadas con éxito',
         ], 201);
     }
+    public function show($id)
+    {
+        $valoracion = Valoracion::find($id);
+
+        if (!$valoracion) {
+            return response()->json([
+                'message' => 'No se encontró la valoración',
+            ], 404);
+        }
+
+        return response()->json(['Valoracion' => $valoracion], $this->successStatus);
+    }
+
 
 
     public function destroy($id)

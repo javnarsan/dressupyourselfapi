@@ -53,6 +53,7 @@ Route::middleware('auth:api')->group( function () {
 
     //Valoraciones
     Route::post('/valoracion', 'API\ValoracionController@store');
+    Route::get('/valoracion/{id}', 'API\ValoracionController@show');
     Route::get('/articulos/{id}/valoraciones', 'API\ValoracionController@getByArticuloId');
     Route::delete('/valoracion/{id}', 'API\ValoracionController@destroy');
     Route::put('/valoraciones/{id}', 'API\ValoracionController@update');

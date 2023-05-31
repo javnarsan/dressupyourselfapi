@@ -129,6 +129,10 @@ Parámetros de salida: Las valoraciones de ese artículo
 Parámetros de entrada: Los parametros de user_id, articulo_id, comentario y puntuacion como Request
 Parámetros de salida: El objeto valoracion y un mensaje de exito
 
+•	GET /api/valoracion/{id}
+Parámetros de entrada: El id de la valoracion
+Parámetros de salida: El objeto valoracion y un mensaje de exito
+
 •	DELETE /api/valoracion/{id}
 Parámetros de entrada: El id de la valoracion que quieres eliminar en la ruta
 Parámetros de salida: Mensaje de error o exito
